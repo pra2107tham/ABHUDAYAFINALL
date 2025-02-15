@@ -52,7 +52,7 @@ export function LoginForm() {
       <div className="w-full max-w-[440px] space-y-5 rounded-2xl bg-white p-7 shadow-[0_2px_4px_0_rgba(0,0,0,0.05),0_1px_6px_-1px_rgba(0,0,0,0.02),0_1px_4px_-1px_rgba(0,0,0,0.02)]">
         <div className="space-y-1">
           <h1 className="text-[22px] font-semibold text-[#1A1A1A]">Login</h1>
-          <p className="text-[15px] text-[#666666]">Welcome back to your UMANG account!</p>
+          <p className="text-[15px] text-[#666666]">Welcome back to your ABHUDAYA account!</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -103,7 +103,7 @@ export function LoginForm() {
 
         <div className="space-y-4">
           <div className="text-center text-[15px]">
-            <span className="text-[#666666]">New on UMANG? </span>
+            <span className="text-[#666666]">New on ABHUDAYA? </span>
             <Link href="/register" className="text-[#0066B3] hover:underline">
               Register Here
             </Link>

@@ -7,7 +7,7 @@ import type React from "react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "UMANG - Unified Mobile Application for New-age Governance",
+  title: "ABHUDAYA- Unified Mobile Application for New-age Governance",
   description: "Access all government services through a single platform",
 }
 

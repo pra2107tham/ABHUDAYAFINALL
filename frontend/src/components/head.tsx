@@ -10,8 +10,8 @@ export default function Header() {
     <header className="border-b px-4 py-2 flex items-center justify-between bg-white sticky top-0 z-50">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1">
-          <Image src="/placeholder.svg" alt="UMANG Logo" width={20} height={20} className="w-5" />
-          <span className="font-semibold text-sm">UMANG</span>
+          <Image src="/image.png" alt="ABHUDAYA Logo" width={20} height={20} className="w-5" />
+          <span className="font-semibold text-sm">ABHUDAYA</span>
         </div>
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -24,10 +24,10 @@ export default function Header() {
       </div>
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" className="rounded-full w-8 h-8 p-0">
-          <Image src="/placeholder.svg" alt="Hi, Chatbot" width={20} height={20} />
+          <Image src="image.png" alt="Hi, Chatbot" width={20} height={20} />
         </Button>
         <Button variant="ghost" size="sm" className="rounded-full w-8 h-8 p-0">
-          <Image src="/placeholder.svg" alt="Dark mode" width={20} height={20} />
+          <Image src="/image.png" alt="Dark mode" width={20} height={20} />
         </Button>
         <ProfileMenu />
       </div>

@@ -33,7 +33,9 @@ export function LocalCenters() {
                   Services: {i === 1 ? "Aadhaar, PAN" : i === 2 ? "Passport, Driving License" : "Voter ID, Ration Card"}
                 </p>
               </div>
-              <Button variant="outline">View Details</Button>
+              <Button variant="outline" onClick={() => window.open("https://findmycsc.nic.in/csc/", "_blank", "noopener,noreferrer")}>
+               View Details
+              </Button>
             </div>
           ))}
         </div>

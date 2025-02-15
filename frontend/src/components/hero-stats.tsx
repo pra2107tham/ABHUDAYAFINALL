@@ -12,7 +12,7 @@ const stats = [
   },
   {
     number: "537.75 Cr",
-    label: "Digital Tracking, Hassle-Free Governance",
+    label: "Central and State Government Schemes",
     bgColor: "bg-[#E3F2FD]",
     textColor: "text-[#1976D2]",
     icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-XVv0ZfVZ1op5lLI1eXtSWSNiBz1KlJ.png",
@@ -30,7 +30,7 @@ export function HeroStats() {
   return (
     <div className="w-full max-w-[1600px] mx-auto mb-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to UMANG</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to ABHUDAYA</h1>
         <p className="text-gray-600 text-lg">Unified Mobile Application for New-age Governance</p>
       </div>
 
@@ -63,11 +63,7 @@ export function HeroStats() {
                           <path d="M90,50 A40,40 0 0,1 50,90" stroke="#F44336" strokeWidth="8" fill="none" />
                           <path d="M50,90 A40,40 0 0,1 10,50" stroke="#4CAF50" strokeWidth="8" fill="none" />
                         </svg>
-                        <div className="absolute right-0 bottom-0 flex gap-1">
-                          <div className="w-3 h-12 bg-[#2196F3] rounded-t-lg"></div>
-                          <div className="w-3 h-16 bg-[#F44336] rounded-t-lg"></div>
-                          <div className="w-3 h-8 bg-[#4CAF50] rounded-t-lg"></div>
-                        </div>
+                       
                       </div>
                     </div>
                   )}

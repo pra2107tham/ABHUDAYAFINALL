@@ -58,13 +58,7 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
         {step === "login" && (
           <div className="space-y-4">
             <div className="flex justify-center">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-11%20112402-bGMGkAZw7Ww543BQxEWS8JngsqrJIu.png"
-                alt="Pehchaan Logo"
-                width={150}
-                height={50}
-                className="h-12 w-auto"
-              />
+              
             </div>
             <h2 className="text-center text-lg font-medium">Sign In to your account via DigiLocker</h2>
             <Tabs defaultValue="mobile" className="w-full">
@@ -128,13 +122,7 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
         {step === "otp" && (
           <div className="space-y-4">
             <div className="flex justify-center">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-11%20112402-bGMGkAZw7Ww543BQxEWS8JngsqrJIu.png"
-                alt="Pehchaan Logo"
-                width={150}
-                height={50}
-                className="h-12 w-auto"
-              />
+             
             </div>
             <h2 className="text-center text-lg font-medium">Verify OTP</h2>
             <div className="bg-green-50 p-4 rounded-md text-sm">
@@ -165,20 +153,8 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
         {step === "consent" && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-11%20112410-91nCOUKii2nSSyAtuUJjMVdbluX8Ts.png"
-                alt="DigiLocker Logo"
-                width={120}
-                height={40}
-                className="h-8 w-auto"
-              />
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-02-11%20112410-91nCOUKii2nSSyAtuUJjMVdbluX8Ts.png"
-                alt="UMANG Logo"
-                width={120}
-                height={40}
-                className="h-8 w-auto"
-              />
+              
+              
             </div>
             <div className="space-y-4">
               <p>Please provide your consent to share the following with UMANG:</p>

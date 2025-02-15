@@ -27,7 +27,7 @@ export function Header() {
             <Menu className="h-5 w-5" />
           </Button>
           <div className="flex items-center gap-2">
-            <Image src="/umang-logo.png" alt="UMANG" width={32} height={32} className="h-8 w-auto" />
+            <Image src="/image.png" alt="UMANG" width={32} height={32} className="h-8 w-auto" />
             <span className="text-lg font-bold text-blue-600">UMANG</span>
           </div>
         </div>
@@ -43,7 +43,7 @@ export function Header() {
         {/* Right Section */}
         <div className="flex items-center gap-4">
           <Button variant="outline" className="hidden md:flex items-center gap-2">
-            <Image src="/chatbot-icon.png" alt="ISL Chatbot" width={20} height={20} />
+            <Image src="/image.png" alt="ISL Chatbot" width={20} height={20} />
             <span>ISL Chatbot</span>
           </Button>
 

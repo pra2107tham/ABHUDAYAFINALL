@@ -9,15 +9,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       <div className="hidden w-[35%] bg-[#001F3F] lg:block">
         <div className="flex h-full flex-col">
           <div className="p-6">
-            <div className="h-16 w-16 overflow-hidden rounded bg-white p-2">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3ou2ItyCaD4vFaOrb0AGCPBnnkYhsJ.png"
-                alt="UMANG Preview"
-                width={48}
-                height={48}
-                className="h-full w-full object-contain"
-              />
-            </div>
+            
           </div>
           <div className="relative flex-1">
             <div
