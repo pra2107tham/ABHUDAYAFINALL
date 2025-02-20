@@ -1,0 +1,20 @@
+2025-02-21 01:00:52,322 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-21 01:00:52,322 - INFO - [33mPress CTRL+C to quit[0m
+2025-02-21 01:00:52,323 - INFO -  * Restarting with stat
+2025-02-21 01:00:53,095 - WARNING -  * Debugger is active!
+2025-02-21 01:00:53,107 - INFO -  * Debugger PIN: 303-706-882
+2025-02-21 01:01:01,014 - INFO - Loading faiss.
+2025-02-21 01:01:01,864 - INFO - Successfully loaded faiss.
+2025-02-21 01:01:01,867 - INFO - Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes.
+2025-02-21 01:01:01,868 - INFO - Text files processed and FAISS index created successfully.
+2025-02-21 01:01:01,869 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:01] "POST /process_texts HTTP/1.1" 200 -
+2025-02-21 01:01:15,487 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:15] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:01:33,002 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:33] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:01:33,066 - INFO - Text files processed and FAISS index created successfully.
+2025-02-21 01:01:33,067 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:33] "POST /process_texts HTTP/1.1" 200 -
+2025-02-21 01:01:42,115 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:42] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:01:54,100 - INFO - 127.0.0.1 - - [21/Feb/2025 01:01:54] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:02:10,047 - INFO - 127.0.0.1 - - [21/Feb/2025 01:02:10] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:02:26,786 - INFO - 127.0.0.1 - - [21/Feb/2025 01:02:26] "POST /query HTTP/1.1" 200 -
+2025-02-21 01:02:52,350 - INFO - 127.0.0.1 - - [21/Feb/2025 01:02:52] "POST /query HTTP/1.1" 200 -
