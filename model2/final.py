@@ -1,20 +1,36 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from langchain.prompts import ChatPromptTemplate
 from langchain_neo4j import Neo4jGraph, GraphCypherQAChain
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.memory import ConversationBufferWindowMemory
-from flask_cors import CORS
+from groq import Groq
+from dotenv import load_dotenv
+import requests
+import os
+from gtts import gTTS  # Google Text-to-Speech for Marathi TTS
 
+# Load environment variables
+load_dotenv()
+
+# Initialize Groq client
+groq_api_key = os.getenv('GROQ_API_KEY')
+if not groq_api_key:
+    raise ValueError("GROQ_API_KEY is not set in the environment variables.")
+groq_client = Groq(api_key=groq_api_key)
+
+# Sarvam AI Mayura API details
+mayura_api_url = "https://api.sarvam.ai/translate"
+mayura_api_key = os.getenv('MAYURA_API_KEY')
+
+# Neo4j connection details
+NEO4J_URI = "neo4j+s://ef35ef60.databases.neo4j.io"
+NEO4J_USERNAME = "neo4j"
+NEO4J_PASSWORD = "XU2GP16UGJR2itxQyIUuiMtHD6nAMVRVamjXhTBL3fs"
+
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
-
-# Neo4j connection details (Replace with actual credentials)
-NEO4J_URI="neo4j+s://ef35ef60.databases.neo4j.io"
-NEO4J_USERNAME="neo4j"
-NEO4J_PASSWORD="XU2GP16UGJR2itxQyIUuiMtHD6nAMVRVamjXhTBL3fs"
-
-# Knowledge Graph connection
+# Connect to Neo4j knowledge graph
 graph = Neo4jGraph(
     url=NEO4J_URI,
     username=NEO4J_USERNAME,
@@ -22,18 +38,19 @@ graph = Neo4jGraph(
     database="neo4j"
 )
 
+# Initialize memory for conversation context
 memory = ConversationBufferWindowMemory(k=5)
 
 # Initialize LLM (Google Gemini)
 llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-pro",
+    model="gemini-2.0-flash",
     temperature=0.3
 )
 
-# Schema description and prompt
+# Define ChatPromptTemplate for LLM
 template = ChatPromptTemplate.from_messages([
     ("system", """
-    You are an AI-powered government scheme assistant. Your task is to convert user queries about government schemes into Cypher queries for a Neo4j knowledge graph. You must return ONLY the Cypher query. Do not include any other text, explanations, or conversational elements. When constructing the Cypher query, ALWAYS convert all string values to lowercase so that the query is case-insensitive and matches the data stored in the graph, which is entirely in lowercase. Also, always use contains for searching or filtering, instead of equals. Also give responses in under 200 characters.
+    You are an AI-powered government scheme assistant. Your task is to convert user queries about government schemes into Cypher queries for a Neo4j knowledge graph. You must return ONLY the Cypher query. Do not include any other text, explanations, or conversational elements. When constructing the Cypher query, ALWAYS convert all string values to lowercase so that the query is case-insensitive and matches the data stored in the graph, which is entirely in lowercase. Also, always use contains for searching or filtering, instead of equals.
 
     ## Instructions for Query Generation
     1.  Analyze the user query to identify relevant filters related to:
@@ -164,7 +181,7 @@ template = ChatPromptTemplate.from_messages([
     ("human", "{query}")
 ])
 
-# Create QA chain
+# Create QA chain with memory
 qa_chain = GraphCypherQAChain.from_llm(
     llm=llm,
     graph=graph,
@@ -175,25 +192,87 @@ qa_chain = GraphCypherQAChain.from_llm(
     validate_cypher=True
 )
 
-@app.route('/query', methods=['GET'])
-def query_schemes():
-    print("Received GET request")
-    print("Headers:", request.headers)
-    print("Query Params:", request.args)
+@app.route('/process_audio', methods=['POST'])
+def process_audio():
+    if 'audio' not in request.files:
+        return jsonify({'error': 'No audio file provided.'}), 400
 
-    user_query = request.args.get('message')
-    if not user_query:
-        return jsonify({'error': 'Missing "message" parameter in query'}), 400
+    audio_file = request.files['audio']
+    if audio_file.filename == '':
+        return jsonify({'error': 'No selected file.'}), 400
 
-    print("Extracted Query:", user_query)
+    # Save the uploaded audio file temporarily
+    audio_path = os.path.join('/tmp', audio_file.filename)
+    audio_file.save(audio_path)
 
     try:
-        response = qa_chain.run(user_query)  # Generate response
-        print("Generated Response:", response)
-        return jsonify({'response': response}), 200
+        with open(audio_path, 'rb') as file:
+            files = {
+                'file': ('audiofile.mp3', audio_file, 'audio/mpeg')
+            }
+            headers = {
+                'api-subscription-key': '0ced95ba-6c6b-44aa-ad0e-afc589ff0102'  # Replace with your actual API subscription key
+            }
+            response = requests.post("http://localhost:3000/transcribe_with_node", headers=headers, files=files)
+            print(response.text)
+        if response.status_code != 200:
+            return jsonify({'error': 'Transcription and translation failed', 'details': response.text}), 500
+
+        result = response.json()
+        english_text = result.get('transcript', '')
+        # english_text = translated_text
+        print(english_text)
+
+        # Step 2: Send English text to LLM via GraphCypherQAChain
+        response_from_llm = qa_chain.run(english_text)
+        print(response_from_llm)
+        # Step 3: Translate LLM response to Marathi using Sarvam AI Mayura
+        headers = {
+            "api-subscription-key": "0ced95ba-6c6b-44aa-ad0e-afc589ff0102",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "input": response_from_llm.replace("\\", ""),
+            "source_language_code": "en-IN",
+            "target_language_code": "mr-IN",
+            "model": "mayura:v1",
+            "mode": "formal",
+            "speaker_gender": "Male",
+            "enable_preprocessing": False
+        }
+        mayura_response = requests.post(mayura_api_url, json=payload, headers=headers)
+
+        if mayura_response.status_code == 200:
+            marathi_text = mayura_response.json().get('translated_text', '')
+        else:
+            return jsonify({'error': 'Translation to Marathi failed'}), 500
+
+        # Step 4: Convert Marathi text to Speech (MP3)
+        tts = gTTS(marathi_text, lang='mr')  
+        audio_output_path = "/tmp/marathi_translation.mp3"
+        tts.save(audio_output_path)
+
+        return jsonify({
+            'english_transcription': english_text,
+            'llm_response': response_from_llm,
+            'marathi_translation': marathi_text,
+            'audio_url': request.host_url + "download_mp3"
+        }), 200
+
     except Exception as e:
-        print("🔥 Flask Error:", str(e))  # Log error in Flask console
-        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
+
+    finally:
+        if os.path.exists(audio_path):
+            os.remove(audio_path)
+
+@app.route('/download_mp3', methods=['GET'])
+def download_mp3():
+    audio_path = "/tmp/marathi_translation.mp3"
+    if os.path.exists(audio_path):
+        return send_file(audio_path, as_attachment=True)
+    else:
+        return jsonify({'error': 'Audio file not found.'}), 404
 
 if __name__ == '__main__':
-    app.run(port=8000,debug=True)
+    app.run(debug=True)
