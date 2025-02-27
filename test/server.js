@@ -96,11 +96,20 @@ app.post('/transcribe_with_node', upload.single('file'), async (req, res) => {
         const translatedText = translationResponse.data.translated_text;
         console.log("Translated Text:", translatedText);
 
+        let inputs = [];
+        if (translatedText.length > 500) {
+            for (let i = 0; i < translatedText.length; i += 500) {
+                inputs.push(translatedText.substring(i, i + 500));
+            }
+        } else {
+            inputs = [translatedText];
+        }
+
         // Step 4: Convert the translated text to speech using Sarvam.ai's Text-to-Speech API
         const ttsResponse = await axios.post(
             TTS_API_URL,
             {
-                inputs: [translatedText],
+                inputs: inputs,
                 target_language_code: 'mr-IN',
                 speaker: 'meera', // Options: 'meera', 'pavithra', 'maitreyi', 'arvind', 'amol', 'amartya', etc.
                 pitch: 0, // Adjust pitch: -1.0 (lower) to 1.0 (higher)
@@ -118,7 +127,7 @@ app.post('/transcribe_with_node', upload.single('file'), async (req, res) => {
             }
         );
 
-        const audioBase64 = ttsResponse.data.audios[0];
+        const audioBase64 = ttsResponse.data.audios;
         // console.log("Audio Base64:", audioBase64);
 
         // Combine the query result, translated text, and audio in the response
